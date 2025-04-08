@@ -30,16 +30,43 @@ def jugadas (cant_personas : int, repeticiones: int) :
 cantidades = [10, 20, 30, 40, 50]
 repeticiones = [1000, 10000, 100000]
 
-print("Simulación del problema de cumpleaños")
-for cant_personas in cantidades:
-    print(f"\nPara {cant_personas} personas:")
-    print(problema_cumpleaños(cant_personas))
+# print("Simulación del problema de cumpleaños")
+# for cant_personas in cantidades:
+#     print(f"\nPara {cant_personas} personas:")
+#     print(problema_cumpleaños(cant_personas))
 
-print("\nEjecutando simulaciones para diferentes cantidades de personas y repeticiones")
+# print("\nEjecutando simulaciones para diferentes cantidades de personas y repeticiones")
+# for rep in repeticiones:
+#     print(f"\nSimulando {rep} repeticiones")
+#     for cant_personas in cantidades:
+#         jugadas(cant_personas, rep)
+
+
+def probabilidad_teorica(m):
+    if m > 365:
+        return 1.0
+    prob = 1.0
+    for i in range(m):
+        prob *= (365 - i) / 365
+    return 1 - prob
+
+def jugadas_con_comparacion (cant_personas : int, repeticiones: int) :
+    victorias = 0
+
+    for _ in range(repeticiones):
+        if problema_cumpleaños(cant_personas):
+            victorias += 1
+    
+    empírica = victorias / repeticiones
+    teórica = probabilidad_teorica(cant_personas)
+
+    print(f"Para {cant_personas} personas | Repeticiones {repeticiones}:")
+    print(f"Prob. empírica: {empírica:.4f}")
+    print(f"Prob. teórica : {teórica:.4f}")
+    print(f"Diferencia     : {abs(empírica - teórica):.4f}")
+    print("-------------------------------------------------------------------")
+
+print("\nEjecutando simulaciones con comparaciones para diferentes cantidades de personas y repeticiones")
 for rep in repeticiones:
-    print(f"\nSimulando {rep} repeticiones")
     for cant_personas in cantidades:
-        jugadas(cant_personas, rep)
-
-
-
+        jugadas_con_comparacion(cant_personas, rep)
